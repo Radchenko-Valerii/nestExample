@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, 
 // import { create } from 'domain';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdateUserDTO } from './dto/update-user.dto';
+import { User } from './schemas/user.schema';
 import { UsersService } from './users.service';
 // import { Response, Request } from 'express';
 
@@ -11,7 +12,7 @@ export class UsersController {
 
   @Get()
   // @Redirect('https://docs.nestjs.com/controllers', 301)
-  getAll() {
+  getAll(): Promise<User[]> {
     return this.userService.getAll();
   }
   //***Express example
@@ -20,21 +21,21 @@ export class UsersController {
   //   return 'USERS: 0';
   // }
   @Get(':id')
-  getById(@Param('id') id): string {
+  getById(@Param('id') id: string): Promise<User> {
     return this.userService.getById(id);
   }
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @Header('BCrypt', 'false')
-  create(@Body() createUserDTO: CreateUserDTO) {
+  create(@Body() createUserDTO: CreateUserDTO): Promise<User> {
     return this.userService.create(createUserDTO);
   }
   @Delete(':id')
-  remove(@Param('id') id): string {
-    return `User by id ${id} removed`;
+  remove(@Param('id') id: string): Promise<User> {
+    return this.userService.remove(id);
   }
   @Put(':id')
-  update(@Body() updateUserDTO: UpdateUserDTO, @Param('id') id) {
-    return `updated success`;
+  update(@Body() updateUserDTO: UpdateUserDTO, @Param('id') id: string): Promise<User> {
+    return this.userService.update(id, updateUserDTO);
   }
 }
