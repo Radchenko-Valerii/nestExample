@@ -1,4 +1,4 @@
-export default {
+module.exports.CONSTANTS = {
   DB_URI:
     'mongodb+srv://mongo:mongo@cluster0.xgade.mongodb.net/users?retryWrites=true&w=majority',
 };
