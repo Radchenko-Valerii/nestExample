@@ -2,24 +2,26 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDTO } from './dto/create-user.dto';
+import { UpdateUserDTO } from './dto/update-user.dto';
 import { User, UserDocument } from './schemas/user.schema';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
-
-  private users = [];
-  getAll() {
-    return this.users.length > 0 ? this.users : 'users not found';
+  async getAll(): Promise<User[]> {
+    return this.userModel.find().exec();
   }
-  getById(id: string) {
-    return this.users.find((u) => u.id === id);
+  async getById(id: string): Promise<User> {
+    return this.userModel.findById(id);
   }
-  create(userDTO: CreateUserDTO) {
-    this.users.push({
-      ...userDTO,
-      id: Date.now().toString(),
-    });
-    return `${userDTO.name} created`;
+  async create(userDTO: CreateUserDTO): Promise<User> {
+    const newUser = new this.userModel(userDTO);
+    return newUser.save();
+  }
+  async remove(id: string): Promise<User> {
+    return this.userModel.findByIdAndRemove(id);
+  }
+  async update(id: string, userDTO: UpdateUserDTO) {
+    return this.userModel.findByIdAndUpdate(id, userDTO, { new: true });
   }
 }
