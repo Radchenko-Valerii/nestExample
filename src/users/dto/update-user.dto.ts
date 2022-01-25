@@ -1,4 +1,4 @@
 export class UpdateUserDTO {
   readonly name: string;
-  readonly id: number;
+  readonly id: string;
 }

@@ -1,4 +1,4 @@
 export class CreateUserDTO {
   readonly name: string;
-  readonly id: number;
+  readonly id: string;
 }
