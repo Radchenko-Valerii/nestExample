@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
-import * as CONSTANTS from './../constants.js';
+import {CONSTANTS}from '../constants';
 
 @Module({
   imports: [UsersModule, MongooseModule.forRoot(CONSTANTS.DB_URI)],
